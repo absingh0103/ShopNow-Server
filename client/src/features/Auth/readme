@@ -1,0 +1,7 @@
+For signup and Login Frontend Validation we use ->> "react-hook-form"
+install npm i react-hook-form
+go to react hook form site to see how to use it and how to apply validation
+
+
+Difference b/w <Navigate></Navigate> and useNavigate is that <Navigate></Navigate> is actually useNavigate Hook converted into React Componenet Form 
+Which Helps in easy to use  

@@ -1,0 +1,6 @@
+react Redux 
+1st step call Api 1->> Product Api wla Page me Api call
+2nd Step Api slice wle me AsyncThunk ka use Kr ke 1st wle ko he Call kro
+then Reducer define kro
+3rd step  store me use reducer ko import kro
+4th step jis file me use krna h wha pe useSelect Kro then Dispatch kro 
