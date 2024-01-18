@@ -101,7 +101,7 @@ exports.resetPasswordRequest = async (req, resp) => {
     user.resetPasswordToken = token;
     await user.save();
     const resetPage =
-      "https://shopnow.cyclic.cloud/reset-password?token=" + token + "&email=" + email;
+      "https://shopnow-nkp0.onrender.com/reset-password?token=" + token + "&email=" + email;
     const subject = "reset password for your ShopNow account";
     const html = `<p>Click <a href='${resetPage}'>here</a>to Reset Password </p>`;
     if (email) {

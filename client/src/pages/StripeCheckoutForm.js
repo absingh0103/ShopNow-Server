@@ -60,7 +60,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: `https://shopnow.cyclic.cloud/order-success/${currentOrder.id}`,
+        return_url: `https://shopnow-nkp0.onrender.com/order-success/${currentOrder.id}`,
       },
     });
 
