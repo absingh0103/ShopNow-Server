@@ -47,6 +47,7 @@ const NavBar = ({ children }) => {
   const dispatch = useDispatch();
  const user = useSelector(selectCompleteUserInfo);
   const [input, setInput] = useState("");
+  const [voiceIn, setVoiceIn] = useState(false);
   // for List of searched items
 
   const handleSearch = (value) => {
@@ -54,7 +55,37 @@ const NavBar = ({ children }) => {
     setInput(value);
     dispatch(fetchSearchedProductsAsync(value));
   }; 
- 
+  const handelVoiceSearch = () => {
+    setVoiceIn(!voiceIn);
+    if (!voiceIn) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert('Speech Recognition API not supported in this browser');
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = (event) => {
+        const speechResult = event.results[0][0].transcript;
+        handleSearch(speechResult);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error detected: ' + event.error);
+      };
+
+      recognition.onaudioend = () => {
+        recognition.stop();
+        setVoiceIn(false);
+      };
+      recognition.start();
+    }
+
+  };
 
   
   return (
@@ -121,7 +152,7 @@ const NavBar = ({ children }) => {
                         <button
                           id="dropdown-button"
                           data-dropdown-toggle="dropdown"
-                          class="flex-shrink-0 z-10 inline-flex items-center px-1  lg:py-2 lg:px-4 text-xs font-medium lg:text-sm lg:font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                          class="flex-shrink-0 z-10 inline-flex items-center px-1  lg:py-2 lg:px-3 text-xs font-medium lg:text-sm lg:font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                           type="button"
                         >
                           All categories
@@ -139,13 +170,38 @@ const NavBar = ({ children }) => {
                           />
                           <button
                             type="button"
-                            className="absolute top-0 right-0 pt-1 lg:p-2.5 flex text-xs  lg:text-sm font-medium h-full text-white bg-orange-500 rounded-r-lg border border-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-400 dark:hover:bg-orange-700 dark:focus:ring-orange-500"
+                            className="absolute top-0 right-0 pt-1 lg:p-2.5 flex text-xs  lg:text-sm font-medium h-full text-white  bg-orange-500  border-orange-500 hover:bg-orange-600"
+                            onClick={handelVoiceSearch}
+                          >
+                            <svg
+                              class={
+                                voiceIn
+                                  ? "w-4 h-5 pr-1 pt-1 text-rose-700 animate-bounce "
+                                  : "w-4 h-5 pr-1 pt-1 text-white hover:text-gray-900"
+                              }
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 16 20"
+                            >
+                              <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M15 7v3a5.006 5.006 0 0 1-5 5H6a5.006 5.006 0 0 1-5-5V7m7 9v3m-3 0h6M7 1h2a3 3 0 0 1 3 3v5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3Z"
+                              />
+                            </svg>
+                          </button>
+                          <button
+                            type="button"
+                            className="absolute top-0 -right-6 pt-1 lg:p-1 flex text-xs  lg:text-sm font-medium h-full text-white hover:text-gray-600 bg-orange-500 rounded-r-lg border border-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-orange-300 dark:bg-orange-400 dark:hover:bg-orange-700 dark:focus:ring-orange-500"
                           >
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
                               fill="currentColor"
-                              className="h-5 w-6 lg:w-6 lg:h-6"
+                              className="h-5 w-6 lg:w-6 lg:h-6 pt-1"
                             >
                               <path
                                 fillRule="evenodd"
